@@ -1,10 +1,16 @@
 import { ArrowUpRight, Check, Minus, Plus } from "lucide-react";
 
+/** Original artwork on dark surfaces; its exact alpha silhouette in brand green on light surfaces. */
+export function OfficialLogo({ surface = "light", decorative = false, className = "" }: { surface?: "light" | "dark"; decorative?: boolean; className?: string }) {
+  return <span className={`official-logo ${className}`} data-surface={surface} aria-hidden={decorative || undefined}>
+    <img src="/branding/SOREMED.png" alt={decorative ? "" : "SOREMED"} width="2501" height="2688" draggable={false} />
+  </span>;
+}
+
 export function Wordmark({ light = false }: { light?: boolean }) {
   return (
-    <span className="wordmark" style={light ? { color: "white" } : undefined}>
-      <span className="wordmark-mark"><span>SR</span></span>
-      SOREMED
+    <span className="wordmark" data-surface={light ? "dark" : "light"}>
+      <OfficialLogo surface={light ? "dark" : "light"} />
     </span>
   );
 }

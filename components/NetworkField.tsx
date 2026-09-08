@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
+import { OfficialLogo } from "./ui";
 
 const nodes = [
   { x: 15, y: 27, label: "Casablanca" },
@@ -53,7 +54,7 @@ export function NetworkField() {
         ))}
         <div className="network-core">
           <div className="core-ring" />
-          <div className="core-inner"><div><small>PLATEFORME</small><strong>CONNECT</strong></div></div>
+          <div className="core-inner"><OfficialLogo surface="dark" className="network-brand" /></div>
         </div>
         <div className="network-caption"><strong>Un réseau, une même précision.</strong>Coordination en temps réel</div>
         <div className="network-signal"><i className="signal-dot" /> LIVE / MAROC</div>

@@ -1,0 +1,125 @@
+@property --entry-aperture {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.gate {
+  --entry-dark: #071912;
+  --entry-ink: #e1e8db;
+  --entry-muted: #bdc9bd;
+  --entry-hairline: rgba(222, 236, 219, .38);
+  --entry-ease: cubic-bezier(.22, 1, .36, 1);
+  --entry-origin-y: 70%;
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--entry-ink);
+  touch-action: none;
+  user-select: none;
+  font-family: var(--font-ui);
+  outline: none;
+}
+.environment {
+  position: absolute;
+  inset: 0;
+  background: var(--entry-dark);
+}
+.world { position: absolute; inset: -8px; }
+.world picture { display: block; width: 100%; height: 100%; }
+.backdrop { width: 100%; height: 100%; object-fit: cover; object-position: 50% 53%; animation: worldReveal 1.1s var(--entry-ease) both; }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(3, 17, 11, .3), rgba(3, 17, 11, .3) 26%, rgba(3, 17, 11, .5) 66%, rgba(3, 17, 11, .85)); }
+.glassEdge { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, rgba(211, 235, 213, .07), transparent 12%, transparent 92%, rgba(211, 235, 213, .05)); }
+.light { position: absolute; top: 0; left: 0; width: 480px; height: 480px; opacity: 0; pointer-events: none; background: radial-gradient(closest-side, rgba(227, 242, 210, .09), transparent); transition: opacity 140ms; }
+.topline { position: absolute; inset: max(24px, env(safe-area-inset-top)) 4.5vw auto; display: flex; justify-content: space-between; align-items: flex-start; }
+.topline .logo { width: 66px; height: 71px; }
+.topline > span:not(.logo) { padding-top: 10px; color: var(--entry-muted); font-size: 12px; }
+.word { position: absolute; top: 29%; left: 0; width: 100%; margin: 0; display: flex; justify-content: center; font: 800 clamp(120px, 18.4vw, 400px)/.96 var(--font-display); letter-spacing: -.05em; animation: wordReveal 850ms var(--entry-ease) 100ms both; user-select: none; }
+.wordGroup { display: flex; }
+.letterExit { display: block; }
+.letter { display: block; position: relative; color: var(--entry-ink); }
+.letter::after { content: attr(data-letter); position: absolute; inset: 0; color: #fffef4; opacity: var(--letter-light, 0); pointer-events: none; }
+.wordGroup:last-child .letterExit:last-child { margin-right: .05em; }
+.invitation { position: absolute; top: 63%; left: 50%; transform: translateX(-50%); text-align: center; width: max-content; max-width: calc(100% - 48px); animation: controlReveal 700ms var(--entry-ease) 350ms both; }
+.invitation p { margin: 0 0 22px; font-size: 13px; font-weight: 400; color: var(--entry-muted); }
+.portal { position: relative; display: grid; place-items: center; width: 304px; height: 64px; padding: 0 24px; border: 1px solid var(--entry-ink); border-radius: 12px; background: var(--paper); color: var(--green-deep); box-shadow: 0 6px 20px rgba(0, 12, 6, .14); font: 500 15px var(--font-ui); transition: transform 360ms var(--entry-ease), background-color 340ms var(--entry-ease), color 340ms var(--entry-ease), border-color 340ms var(--entry-ease); -webkit-tap-highlight-color: transparent; }
+.portal[data-near="true"] { transition: background-color 340ms var(--entry-ease), color 340ms var(--entry-ease), border-color 340ms var(--entry-ease); }
+.portal:is(:hover,:focus-visible) { background-color: var(--green); border-color: var(--green); color: var(--white); }
+.portal:focus-visible { outline: 2px solid var(--entry-ink); outline-offset: 5px; }
+.controlContent { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; transition: transform 180ms var(--entry-ease); }
+.portal:active .controlContent { transform: scale(.96); }
+.labelMask { position: relative; width: 190px; height: 1.6em; overflow: hidden; line-height: 1.6; text-align: left; white-space: nowrap; }
+.labelRest, .labelHover { display: block; transition: transform 360ms var(--entry-ease), opacity 260ms; }
+.labelHover { position: absolute; inset: 0; transform: translateY(110%); opacity: 0; }
+.portal:focus-visible .labelRest { transform: translateY(-110%); opacity: 0; }
+.portal:focus-visible .labelHover { transform: translateY(0); opacity: 1; }
+.portal svg { flex: 0 0 auto; transition: transform 360ms var(--entry-ease); }
+.portal:focus-visible svg { transform: translateX(4px); }
+.footnote { position: absolute; left: 4.5vw; right: 4.5vw; bottom: max(30px, env(safe-area-inset-bottom)); display: flex; justify-content: space-between; align-items: flex-end; color: var(--entry-muted); font-size: 12px; line-height: 1.65; }
+.footnote p { margin: 0; }
+.footnote > span { font-size: 11px; }
+.gate[data-entry-phase="entering"] .environment { mask-image: radial-gradient(circle at 50% var(--entry-origin-y), transparent max(0px, calc(var(--entry-aperture) - 1px)), #000 var(--entry-aperture)); animation: openScene 940ms cubic-bezier(.65, 0, .2, 1) 180ms both; }
+.gate[data-entry-phase="entering"] .letterExit { animation: wordExit 920ms var(--entry-ease) calc(var(--letter-order) * 18ms) both; }
+.gate[data-entry-phase="entering"] .controlContent { animation: controlPress 260ms var(--entry-ease) both; }
+.gate[data-entry-phase="entering"] .invitation { animation: invitationExit 240ms ease both; }
+.gate[data-entry-phase="entering"] .topline, .gate[data-entry-phase="entering"] .footnote { transition: opacity 200ms; opacity: 0; }
+@keyframes worldReveal { from { opacity: 0; transform: scale(1.015); } to { opacity: 1; transform: scale(1); } }
+@keyframes wordReveal { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes controlReveal { from { opacity: 0; translate: 0 9px; } to { opacity: 1; translate: 0 0; } }
+@keyframes openScene { from { --entry-aperture: 0px; } to { --entry-aperture: var(--entry-aperture-target, 150vmax); } }
+@keyframes wordExit { 0% { opacity: 1; transform: translate3d(0,0,0); } 35% { opacity: .92; } 100% { opacity: 0; transform: translate3d(calc((var(--letter-order) - 3) * 6px), -12vh, 0); } }
+@keyframes controlPress { to { transform: scale(.95); opacity: 0; } }
+@keyframes invitationExit { to { opacity: 0; } }
+@media (hover: hover) and (pointer: fine) {
+  .portal:hover .labelRest { transform: translateY(-110%); opacity: 0; }
+  .portal:hover .labelHover { transform: translateY(0); opacity: 1; }
+  .portal:hover svg { transform: translateX(4px); }
+}
+@media (max-width: 1024px) and (min-width: 768px) {
+  .word { top: 32%; }
+  .invitation { top: 59%; }
+}
+@media (max-width: 767px) {
+  .topline { inset: max(24px, env(safe-area-inset-top)) 24px auto; }
+  .topline .logo { width: 54px; height: 58px; }
+  .topline > span:not(.logo) { font-size: 10px; max-width: 110px; line-height: 1.5; text-align: right; padding-top: 5px; }
+  .word { top: 24%; flex-direction: column; align-items: center; font-size: 32vw; line-height: .87; letter-spacing: -.055em; }
+  .wordGroup { justify-content: center; }
+  .wordGroup .letterExit:last-child { margin-right: .055em; }
+  .invitation { top: 61%; }
+  .invitation p { margin-bottom: 21px; font-size: 12px; }
+  .portal { width: 286px; height: 62px; font-size: 14px; }
+  .labelMask { width: 181px; }
+  .glassEdge, .light { display: none; }
+  .backdrop { object-position: 52% center; animation: none; }
+  .shade { background: linear-gradient(180deg, rgba(3,17,11,.36), rgba(3,17,11,.34) 25%, rgba(3,17,11,.32) 44%, rgba(3,17,11,.75) 72%, rgba(3,17,11,.92)); }
+  .footnote { left: 24px; right: 24px; bottom: max(28px, env(safe-area-inset-bottom)); text-align: center; justify-content: center; font-size: 11px; }
+  .footnote > span { display: none; }
+  .gate[data-entry-phase="entering"] .environment { animation-duration: 740ms; animation-delay: 120ms; }
+  .gate[data-entry-phase="entering"] .letterExit { animation: wordExit 650ms var(--entry-ease) both; }
+}
+@media (max-height: 600px) and (min-width: 768px) {
+  .word { top: 24%; font-size: 16vw; }
+  .invitation { top: 63%; }
+  .invitation p { margin-bottom: 12px; }
+  .portal { height: 65px; }
+  .footnote { bottom: 16px; font-size: 10px; }
+}
+@media (max-height: 650px) and (max-width: 767px) {
+  .word { top: 20%; font-size: min(30vw, 20dvh); }
+  .invitation { top: 60%; }
+  .portal { height: 64px; }
+  .invitation p { margin-bottom: 12px; }
+  .footnote { bottom: max(16px, env(safe-area-inset-bottom)); font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .word, .backdrop, .invitation { animation: none; }
+  .light, .glassEdge { display: none; }
+  .portal, .portal::before, .portal svg, .labelRest, .labelHover { transition: none; }
+  .gate[data-entry-phase="entering"] .environment { animation-duration: 150ms; animation-delay: 0ms; }
+  .gate[data-entry-phase="entering"] .letterExit { animation-duration: 100ms; animation-delay: 0ms; }
+}

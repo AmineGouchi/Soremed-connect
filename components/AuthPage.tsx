@@ -11,8 +11,8 @@ import { Button, Eyebrow, Wordmark } from "./ui";
 type AuthMode = "login" | "register";
 
 const authCopy = {
-  login: { kicker: "ESPACE CLIENT / CONNEXION", title: "Votre espace, prêt quand vous l’êtes.", intro: "Retrouvez vos commandes, vos documents et vos habitudes de réassort au même endroit." },
-  register: { kicker: "ESPACE CLIENT / CRÉATION", title: "Un espace à la mesure de votre officine.", intro: "Créez vos identifiants. Votre demande reste ensuite entre vos mains et celles de l’équipe SOREMED." },
+  login: { kicker: "Connexion · Espace client", title: "Votre espace, prêt quand vous l’êtes.", intro: "Retrouvez vos commandes, vos documents et vos habitudes de réassort au même endroit." },
+  register: { kicker: "Créer votre espace", title: "Un espace à la mesure de votre officine.", intro: "Créez vos identifiants. Votre demande reste ensuite entre vos mains et celles de l’équipe SOREMED." },
 };
 
 export function AuthPage({ mode }: { mode: AuthMode }) {
@@ -76,5 +76,5 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
 }
 
 function AuthArt({ mode }: { mode: AuthMode }) {
-  return <><div className="auth-art-top"><Link href="/"><Wordmark light /></Link><span>SOREMED / CONNECT</span></div><div className="auth-art-copy"><Eyebrow>{mode === "login" ? "ACCÈS SÉCURISÉ" : "NOUVELLE OFFICINE"}</Eyebrow><h1>{mode === "login" ? <>La précision commence par un espace clair.</> : <>Votre prochaine routine commence ici.</>}</h1><p>{mode === "login" ? "Une interface conçue pour que votre équipe retrouve l’essentiel, sans détour." : "Un premier accès simple, puis un parcours SOREMED adapté à votre quotidien."}</p></div><div className="auth-art-foot"><i className="signal-dot" /> Données protégées · accès professionnel</div></>;
+  return <><div className="auth-art-top"><Link href="/"><Wordmark light /></Link><span>Espace professionnel</span></div><div className="auth-art-copy"><Eyebrow>{mode === "login" ? "ACCÈS SÉCURISÉ" : "NOUVELLE OFFICINE"}</Eyebrow><h1>{mode === "login" ? <>La précision commence par un espace clair.</> : <>Votre prochaine routine commence ici.</>}</h1><p>{mode === "login" ? "Une interface conçue pour que votre équipe retrouve l’essentiel, sans détour." : "Un premier accès simple, puis un parcours SOREMED adapté à votre quotidien."}</p></div><div className="auth-art-foot"><i className="signal-dot" /> Données protégées · accès professionnel</div></>;
 }

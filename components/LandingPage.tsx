@@ -3,12 +3,12 @@
 import { ArrowRight, Check, ChevronRight, Clock3, FileText, PackageCheck, ShieldCheck, Sparkles, Waypoints } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { AnimatedNumber } from "./AnimatedNumber";
 import { NetworkField } from "./NetworkField";
 import { PageZero } from "./PageZero";
 import { StudioCursor } from "./StudioCursor";
-import { Button, Eyebrow, Wordmark } from "./ui";
+import { Button, Eyebrow, OfficialLogo, Wordmark } from "./ui";
 
 const logistics = [
   { number: "01", title: "Pharmacie", copy: "Votre besoin est capté en quelques secondes, depuis un espace pensé pour l’officine." },
@@ -24,9 +24,15 @@ const reveal: Variants = {
 };
 
 export function LandingPage() {
+  const [entryState, setEntryState] = useState<"locked" | "revealing" | "entered">("locked");
+  const heroHeading = useRef<HTMLHeadingElement>(null);
   const [activeLogistic, setActiveLogistic] = useState(2);
   const [activeOnboarding, setActiveOnboarding] = useState(1);
   const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    if (entryState === "entered") heroHeading.current?.focus({ preventScroll: true });
+  }, [entryState]);
 
   useEffect(() => {
     const onScroll = () => setHasScrolled(window.scrollY > 36);
@@ -37,8 +43,9 @@ export function LandingPage() {
 
   return (
     <main className="site-shell">
-      <PageZero />
+      {entryState !== "entered" && <PageZero onEntering={() => setEntryState("revealing")} onEntered={() => setEntryState("entered")} />}
       <StudioCursor />
+      <div className="landing-content" data-entry-state={entryState} inert={entryState !== "entered"} aria-hidden={entryState !== "entered"}>
       <header className={`landing-header ${hasScrolled ? "is-scrolled" : ""}`}>
         <div className="container landing-header-inner">
           <Link href="/" aria-label="SOREMED Connect, accueil"><Wordmark /></Link>
@@ -52,11 +59,10 @@ export function LandingPage() {
       </header>
 
       <section className="hero">
-        <div className="hero-ghost" aria-hidden="true">SOREMED</div>
         <div className="container-wide hero-grid">
           <motion.div className="hero-copy" initial="hidden" animate="visible" variants={reveal}>
             <Eyebrow>La nouvelle interface SOREMED</Eyebrow>
-            <h1>La distribution pharmaceutique, <em>réinventée.</em></h1>
+            <h1 ref={heroHeading} tabIndex={-1}>La distribution pharmaceutique, <em>réinventée.</em></h1>
             <p className="hero-subtitle">Un espace B2B qui aide les pharmacies à commander plus vite, suivre chaque livraison et garder le contrôle sur leur activité.</p>
             <div className="hero-actions">
               <Link href="/connexion" className="btn btn-primary" data-cursor="VOIR">Accéder à mon espace <ArrowRight size={15} className="arrow" /></Link>
@@ -67,7 +73,7 @@ export function LandingPage() {
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: .96, x: 24 }} animate={{ opacity: 1, scale: 1, x: 0 }} transition={{ duration: 1, delay: .15, ease: "easeOut" }} data-cursor="EXPLORER">
-            <NetworkField />
+            {entryState !== "locked" && <NetworkField />}
           </motion.div>
         </div>
       </section>
@@ -120,7 +126,7 @@ export function LandingPage() {
         <div className="container showcase-grid">
           <motion.div className="showcase-copy" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={reveal}><Eyebrow>Votre espace, enfin à votre mesure</Eyebrow><h2 className="section-title">L’essentiel. Au même endroit.</h2><p className="section-copy">Un tableau de bord clair pour piloter les priorités de la journée et garder le fil sur les commandes qui comptent.</p><div className="showcase-list"><div className="showcase-list-item"><span>01</span><div><h4>Une commande en deux temps</h4><p>Retrouvez vos produits courants avant même de commencer à chercher.</p></div></div><div className="showcase-list-item"><span>02</span><div><h4>Des statuts qui parlent</h4><p>Une progression concrète, de la préparation jusqu’à la livraison.</p></div></div><div className="showcase-list-item"><span>03</span><div><h4>Un historique exploitable</h4><p>Vos documents et votre activité restent faciles à retrouver.</p></div></div></div></motion.div>
           <motion.div className="mockup-wrap" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} transition={{ duration: .8, ease: "easeOut" }}>
-            <div className="mockup"><div className="mockup-screen"><div className="mockup-topbar"><div className="mini-brand"><b /> SOREMED CONNECT</div><div className="mini-top-actions"><span /><span /><i /></div></div><div className="mockup-body"><aside className="mini-sidebar"><small /><div className="mini-side-line active">Vue d’ensemble</div><div className="mini-side-line">Commander</div><div className="mini-side-line">Commandes</div><div className="mini-side-line">Documents</div><div className="mini-side-line">Favoris</div></aside><div className="mini-content"><div className="mini-greeting" /><div className="mini-sub" /><div className="mini-actions"><i className="mini-pill" /><div className="mini-filters"><i /><i /></div></div><div className="mini-stats"><div className="mini-stat"><span /><b /></div><div className="mini-stat"><span /><b /></div><div className="mini-stat"><span /><b /></div></div><div className="mini-lower"><div className="mini-chart"><span /></div><div className="mini-order"><span /><div className="mini-order-row"><i /><b /></div><div className="mini-order-row"><i /><b /></div><div className="mini-order-row"><i /><b /></div></div></div></div></div></div></div>
+            <div className="mockup"><div className="mockup-screen"><div className="mockup-topbar"><div className="mini-brand"><OfficialLogo decorative /></div><div className="mini-top-actions"><span /><span /><i /></div></div><div className="mockup-body"><aside className="mini-sidebar"><small /><div className="mini-side-line active">Vue d’ensemble</div><div className="mini-side-line">Commander</div><div className="mini-side-line">Commandes</div><div className="mini-side-line">Documents</div><div className="mini-side-line">Favoris</div></aside><div className="mini-content"><div className="mini-greeting" /><div className="mini-sub" /><div className="mini-actions"><i className="mini-pill" /><div className="mini-filters"><i /><i /></div></div><div className="mini-stats"><div className="mini-stat"><span /><b /></div><div className="mini-stat"><span /><b /></div><div className="mini-stat"><span /><b /></div></div><div className="mini-lower"><div className="mini-chart"><span /></div><div className="mini-order"><span /><div className="mini-order-row"><i /><b /></div><div className="mini-order-row"><i /><b /></div><div className="mini-order-row"><i /><b /></div></div></div></div></div></div></div>
           </motion.div>
         </div>
       </section>
@@ -134,6 +140,7 @@ export function LandingPage() {
 
       <section className="final-cta"><div className="container"><Eyebrow>LA PROCHAINE COMMANDE COMMENCE ICI</Eyebrow><h2>Plus de clarté. Plus de temps pour l’essentiel.</h2><p>SOREMED Connect donne à chaque pharmacie un espace à la hauteur de son quotidien.</p><Link href="/connexion" className="btn btn-primary">Découvrir mon espace <ArrowRight size={15} className="arrow" /></Link></div></section>
       <footer className="site-footer"><div className="container site-footer-inner"><Wordmark light /><small>© 2026 SOREMED Connect · Expérience démo confidentielle</small></div></footer>
+      </div>
     </main>
   );
 }
