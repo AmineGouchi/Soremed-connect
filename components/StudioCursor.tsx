@@ -7,7 +7,8 @@ export function StudioCursor() {
   const labelRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const enabled = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 768px)");
+    if (!enabled.matches) return;
     const cursor = cursorRef.current;
     const label = labelRef.current;
     if (!cursor || !label) return;
@@ -25,7 +26,7 @@ export function StudioCursor() {
       label.textContent = context;
     };
     const onMove = (event: PointerEvent) => {
-      if (event.pointerType === "touch") return;
+      if (event.pointerType === "touch" || !enabled.matches) return;
       // The primary pointer is immediate. Only its contextual ring animates.
       cursor.style.transform = `translate3d(${event.clientX - 9}px, ${event.clientY - 9}px, 0)`;
       if (!visible) {

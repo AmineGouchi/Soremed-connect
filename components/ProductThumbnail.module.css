@@ -1,0 +1,21 @@
+.media.media { width:52px; height:52px; flex:0 0 auto; position:relative; display:inline-grid; place-items:center; vertical-align:middle; margin:0; border:1px solid var(--line); border-radius:8px; background:var(--cream); overflow:hidden; }
+.media svg { width:90%; height:90%; }
+.media img { position:absolute; inset:0; width:100%; height:100%; padding:6px; object-fit:contain; opacity:0; transition:opacity 180ms var(--ease-interface); }
+.media[data-state="loaded"] img { opacity:1; }
+.media[data-state="loading"]::after { content:""; position:absolute; bottom:0; left:0; width:100%; height:2px; background:var(--sage); animation:media-pulse 1s ease-in-out infinite alternate; }
+.media.large { width:160px; height:160px; border-radius:12px; }
+.large img { padding:16px; }
+.trigger { display:inline-flex; padding:0; border:0; border-radius:8px; background:transparent; flex:0 0 auto; cursor:zoom-in; }
+.trigger:hover .media { border-color:var(--green); }
+.trigger:focus-visible,.close:focus-visible { outline:2px solid var(--green); outline-offset:4px; }
+.dialog { width:min(460px,calc(100% - 32px)); max-height:calc(100dvh - 48px); padding:32px; border:1px solid var(--line); border-radius:16px; color:var(--ink); background:var(--paper); }
+.dialog::backdrop { background:rgba(13,33,29,.5); }
+.dialog h2 { margin:24px 0 8px; font:700 24px/1.2 var(--font-display); letter-spacing:-.03em; }
+.dialog p { line-height:1.6; }
+.dialog .note { font:12px/1.6 var(--font-ui); color:var(--ink-soft); margin:14px 0 0; }
+.dialog dl { margin:24px 0; border-top:1px solid var(--line); }
+.dialog dl div { display:flex; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid var(--line); font:13px var(--font-ui); }
+.dialog dd { margin:0; font-weight:600; }
+.close { position:absolute; right:12px; top:12px; width:44px; height:44px; border:0; background:transparent; color:var(--ink); display:grid; place-items:center; border-radius:8px; }
+@keyframes media-pulse { to { opacity:.25; } }
+@media(prefers-reduced-motion:reduce) { .media img { transition:none; }.media[data-state="loading"]::after { animation:none; } }

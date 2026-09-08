@@ -83,6 +83,11 @@
   .word { top: 32%; }
   .invitation { top: 59%; }
 }
+/* Keep the existing composition unless the viewport-wide title reaches the CTA.
+   The clamp below is the display font size × its .96 line-height. */
+@media (min-width: 1025px) and (min-height: 601px) {
+  .word { top: min(29%, calc(63dvh - clamp(115.2px, 17.664vw, 384px) - 16px)); }
+}
 @media (max-width: 767px) {
   .topline { inset: max(24px, env(safe-area-inset-top)) 24px auto; }
   .topline .logo { width: 54px; height: 58px; }

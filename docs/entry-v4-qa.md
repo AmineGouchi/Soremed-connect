@@ -23,7 +23,7 @@ Vérification du 8 septembre 2026. Travail incrémental sur le projet existant.
 - Focus clavier contenu dans l'entrée, puis transféré au titre de l'accueil.
 - Mouvement du curseur immédiat ; une seule boucle rAF à la demande pour le décor. Aucun rendu React à la fréquence du pointeur.
 - Suppression des filtres de 52 px, des transitions de décor de 900 ms, de la boucle de curseur permanente et des anciennes couches CSS.
-- Pas de WebGL ajouté. Le réseau animé de l'accueil n'est monté qu'au début de l'ouverture.
+- Pas de WebGL ajouté. Mise à jour performance : réseau pré-monté mais immobile derrière l’entrée, animation activée seulement après l’ouverture et lorsqu’il est visible.
 - Compteurs conservés, avec nettoyage rAF, progression bornée et mise à jour DOM sans rerendu React par frame.
 
 ## Rendus et contrôles exécutés

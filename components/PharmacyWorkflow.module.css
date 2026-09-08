@@ -1,0 +1,32 @@
+.section { padding:110px 0 120px; background:var(--paper); color:var(--ink); scroll-margin-top:100px; }
+.header { display:grid; grid-template-columns:1fr 1fr; align-items:end; column-gap:80px; padding-bottom:56px; border-bottom:1px solid var(--line-strong); }
+.header>span { grid-column:1/-1; font:500 14px var(--font-ui); margin-bottom:26px; color:var(--green); }
+.header h2 { margin:0; font:800 clamp(40px,5.5vw,72px)/1.04 var(--font-display); letter-spacing:-.055em; }
+.header em { font-style:normal; color:var(--green); }
+.header p { margin:0 0 5px; font:400 19px/1.6 var(--font-ui); color:var(--ink-soft); }
+.layout { display:grid; grid-template-columns:.8fr 1.2fr; gap:80px; padding-top:46px; }
+.chapters { display:flex; flex-direction:column; align-items:stretch; }
+.chapters button { display:grid; grid-template-columns:48px 1fr 20px; align-items:center; gap:14px; padding:26px 0; border:0; border-bottom:1px solid var(--line); background:transparent; color:var(--ink-soft); text-align:left; transition:color 180ms, border-color 180ms; }
+.chapters time { font:11px var(--font-mono); }
+.chapters button>span { font:600 17px var(--font-display); letter-spacing:-.02em; }
+.chapters button>svg { opacity:0; transform:translateX(-6px); transition:transform 220ms,opacity 220ms; }
+.chapters button:hover,.chapters button.active { color:var(--green-deep); border-color:var(--green); }
+.chapters button.active>svg,.chapters button:hover>svg { opacity:1; transform:none; }
+.chapters button:focus-visible,.link:focus-visible { outline:2px solid var(--green); outline-offset:5px; }
+.link { margin-top:42px; display:inline-flex; align-items:center; gap:12px; font:600 13px var(--font-ui); }
+.chapterCopy { min-height:138px; }
+.chapterCopy h3 { font:700 26px/1.2 var(--font-display); letter-spacing:-.035em; margin:0 0 14px; }
+.chapterCopy p { font:14px/1.7 var(--font-ui); color:var(--ink-soft); max-width:480px; margin:0 0 24px; }
+.visual { background:var(--green-deep); padding:28px; color:var(--paper); position:relative; }
+.visualHead { display:flex; justify-content:space-between; align-items:center; font:10px var(--font-mono); color:var(--sage); margin-bottom:25px; }
+.visualHead>span:first-child { font:500 11px var(--font-ui); letter-spacing:.02em; text-transform:none; }
+.sheet { padding:22px; background:var(--paper); color:var(--ink); border-radius:4px; }
+.sheetTitle { display:flex; align-items:center; gap:12px; margin-bottom:18px; font:600 14px var(--font-display); }
+.row { display:flex; align-items:center; gap:12px; min-height:53px; border-top:1px solid var(--line); font:12px/1.5 var(--font-ui); }
+.marker,.current { display:grid; place-items:center; width:24px; height:24px; flex:0 0 auto; color:var(--green); background:var(--mint); border-radius:4px; }
+.current { background:var(--green-deep); color:white; }
+.sheetFoot { display:flex; justify-content:space-between; align-items:center; gap:12px; border-top:1px solid var(--line); padding-top:16px; font:11px var(--font-ui); color:var(--ink-soft); }
+.visualCaption { margin:22px 0 14px; font:500 15px/1.6 var(--font-ui); }
+.demo { font:10px var(--font-ui); color:var(--sage); }
+@media(max-width:820px) { .section{padding:70px 0}.header{grid-template-columns:1fr;gap:24px;padding-bottom:30px}.header>span{margin:0}.header p{font-size:16px}.layout{grid-template-columns:1fr;gap:32px;padding-top:10px}.chapters button{padding:20px 0}.link{margin-top:24px}.chapterCopy{min-height:0}.visual{padding:20px}.sheet{padding:16px}.row{min-height:58px}.header h2{font-size:clamp(40px,9vw,62px)} }
+@media(prefers-reduced-motion:reduce) { .chapters button,.chapters button>svg{transition:none} }

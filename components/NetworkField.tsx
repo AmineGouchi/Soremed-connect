@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { OfficialLogo } from "./ui";
 
 const nodes = [
@@ -11,16 +11,32 @@ const nodes = [
   { x: 16, y: 73, label: "Agadir" },
 ];
 
-export function NetworkField() {
+export function NetworkField({ active = true }: { active?: boolean }) {
   const area = useRef<HTMLDivElement>(null);
+  const bounds = useRef<DOMRect | null>(null);
+  const inView = useInView(area);
+  const reducedMotion = useReducedMotion();
+  const [visible, setVisible] = useState(true);
+  const running = active && inView && visible && !reducedMotion;
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const rotateX = useSpring(pointerY, { stiffness: 80, damping: 18 });
   const rotateY = useSpring(pointerX, { stiffness: 80, damping: 18 });
 
+  useEffect(() => {
+    const onVisibility = () => setVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!running) { pointerX.set(0); pointerY.set(0); }
+  }, [running, pointerX, pointerY]);
+
   function onMove(event: React.MouseEvent<HTMLDivElement>) {
-    if (!area.current) return;
-    const rect = area.current.getBoundingClientRect();
+    if (!running || !bounds.current || !matchMedia("(hover: hover) and (pointer: fine) and (min-width: 768px)").matches) return;
+    const rect = bounds.current;
     pointerX.set((event.clientX - rect.left - rect.width / 2) / 22);
     pointerY.set(-(event.clientY - rect.top - rect.height / 2) / 30);
   }
@@ -31,7 +47,7 @@ export function NetworkField() {
   }
 
   return (
-    <div ref={area} className="network-stage" onMouseMove={onMove} onMouseLeave={onLeave}>
+    <div ref={area} className="network-stage" data-animation-active={running} onMouseEnter={() => { bounds.current = area.current?.getBoundingClientRect() ?? null; }} onMouseMove={onMove} onMouseLeave={onLeave}>
       <motion.div className="network-panel" style={{ rotateX, rotateY }}>
         <div className="network-grid" />
         <svg className="network-lines" viewBox="0 0 540 440" aria-hidden="true">
@@ -40,17 +56,15 @@ export function NetworkField() {
           <path className="network-line" d="M270 220 L86 320" fill="none" />
           <path className="network-line" d="M80 120 L86 320" fill="none" />
           <path className="network-line" d="M454 132 L422 342" fill="none" />
-          <motion.circle cx="270" cy="220" r="78" fill="none" stroke="rgba(28,122,92,.12)" strokeWidth="1" strokeDasharray="2 7" animate={{ rotate: 360 }} transition={{ duration: 24, repeat: Infinity, ease: "linear" }} />
+          <circle className="network-orbit" cx="270" cy="220" r="78" fill="none" stroke="rgba(28,122,92,.12)" strokeWidth="1" strokeDasharray="2 7" />
         </svg>
         {nodes.map((node, index) => (
-          <motion.div
+          <div
             key={node.label}
             className={`network-node node-${index + 1}`}
-            animate={{ y: [0, index % 2 === 0 ? -5 : 5, 0] }}
-            transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut", delay: index * .3 }}
           >
             {node.label}
-          </motion.div>
+          </div>
         ))}
         <div className="network-core">
           <div className="core-ring" />

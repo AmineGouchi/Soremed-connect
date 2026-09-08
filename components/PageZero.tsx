@@ -19,6 +19,12 @@ export function PageZero({ onEntering, onEntered }: Props) {
   const committed = useRef(false);
 
   useEffect(() => {
+    if (new URLSearchParams(location.search).has("entry-profile") && !document.querySelector("[data-entry-profile]")) {
+      void import("../lib/entry-profile").then(({ profileEntry }) => profileEntry());
+    }
+  }, []);
+
+  useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
     const previous = [html.style.overflow, body.style.overflow, body.style.touchAction];
@@ -59,6 +65,7 @@ export function PageZero({ onEntering, onEntered }: Props) {
     };
     const render = () => {
       frame = 0;
+      if (committed.current) return;
       const enabled = finePointer.matches && pointer.inside;
       const nx = enabled ? (pointer.x - bounds.left) / bounds.width * 2 - 1 : 0;
       const ny = enabled ? (pointer.y - bounds.top) / bounds.height * 2 - 1 : 0;
@@ -85,7 +92,7 @@ export function PageZero({ onEntering, onEntered }: Props) {
     };
     const requestRender = () => { if (!frame) frame = requestAnimationFrame(render); };
     const move = (event: PointerEvent) => {
-      if (event.pointerType === "touch" || !finePointer.matches) return;
+      if (committed.current || event.pointerType === "touch" || !finePointer.matches) return;
       pointer = { x: event.clientX, y: event.clientY, inside: true };
       requestRender();
     };
@@ -112,6 +119,7 @@ export function PageZero({ onEntering, onEntered }: Props) {
   function enter() {
     if (committed.current) return;
     committed.current = true;
+    if (lightRef.current) lightRef.current.style.opacity = "0";
     // Start the aperture at the actual control, including at short viewports.
     const scene = sceneRef.current;
     const portal = portalRef.current;

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState } from "react";
+import type { ProductMediaAsset } from "./ProductThumbnail";
 
 export type Product = {
   id: string;
@@ -11,6 +12,7 @@ export type Product = {
   stock: "Disponible" | "Stock limité" | "Indisponible";
   favorite?: boolean;
   initials: string;
+  media?: ProductMediaAsset;
 };
 
 export type CartLine = Product & { quantity: number };

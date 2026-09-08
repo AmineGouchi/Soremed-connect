@@ -4,7 +4,7 @@ import { ArrowRight, Check, ChevronRight, Clock3, FileText, PackageCheck, Shield
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
-import { AnimatedNumber } from "./AnimatedNumber";
+import { PharmacyWorkflow } from "./PharmacyWorkflow";
 import { NetworkField } from "./NetworkField";
 import { PageZero } from "./PageZero";
 import { StudioCursor } from "./StudioCursor";
@@ -73,7 +73,7 @@ export function LandingPage() {
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: .96, x: 24 }} animate={{ opacity: 1, scale: 1, x: 0 }} transition={{ duration: 1, delay: .15, ease: "easeOut" }} data-cursor="EXPLORER">
-            {entryState !== "locked" && <NetworkField />}
+            <NetworkField active={entryState === "entered"} />
           </motion.div>
         </div>
       </section>
@@ -89,27 +89,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="section" id="experience">
-        <div className="container">
-          <motion.div className="section-heading-row" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={reveal}>
-            <div><Eyebrow>Une interface qui comprend le rythme</Eyebrow><h2 className="section-title">Pensée pour les gestes qui comptent.</h2></div>
-            <p className="section-copy">SOREMED Connect transforme les habitudes répétitives en actions simples. Le design disparaît derrière la fluidité du travail bien fait.</p>
-          </motion.div>
-          <div className="feature-grid">
-            <motion.article className="feature-card feature-large" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .22 }} variants={reveal}>
-              <span className="feature-index">01 / FLUIDITÉ</span><h3>Chaque seconde rendue à votre officine.</h3><p>Rechercher, réordonner, vérifier : les informations essentielles sont organisées autour de votre quotidien, pas autour d’une logique technique.</p>
-              <div className="feature-visual"><span className="visual-bar" /><i className="visual-dot dot-a" /><i className="visual-dot dot-b" /><i className="visual-dot dot-c" /></div>
-              <div style={{ position: "absolute", left: 27, bottom: 26, font: "10px var(--font-mono)", color: "var(--sage)" }}><AnimatedNumber value={98} suffix="%" /> des commandes sans friction</div>
-            </motion.article>
-            <motion.article className="feature-card" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .22 }} variants={reveal} transition={{ delay: .1 }}>
-              <span className="feature-index">02 / PRÉCISION</span><h3>Une donnée, au bon moment.</h3><p>Disponibilité, référence, statut : chaque détail utile est présenté sans bruit.</p><div className="feature-visual"><span className="visual-bar" /><i className="visual-dot dot-a" /><i className="visual-dot dot-b" /><i className="visual-dot dot-c" /></div>
-            </motion.article>
-            <motion.article className="feature-card" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .22 }} variants={reveal} transition={{ delay: .2 }}>
-              <span className="feature-index">03 / CONTINUITÉ</span><h3>Vos repères restent toujours là.</h3><p>Favoris, commandes passées et documents se retrouvent naturellement, d’une visite à l’autre.</p><div className="feature-visual"><span className="visual-bar" /><i className="visual-dot dot-a" /><i className="visual-dot dot-b" /><i className="visual-dot dot-c" /></div>
-            </motion.article>
-          </div>
-        </div>
-      </section>
+      <PharmacyWorkflow />
 
       <section className="section logistics" id="reseau">
         <div className="container logistics-wrap">
